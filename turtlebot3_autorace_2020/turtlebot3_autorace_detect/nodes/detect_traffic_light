@@ -178,6 +178,13 @@ class DetectTrafficLight():
         self.lightness_green_l = config.lightness_green_l
         self.lightness_green_h = config.lightness_green_h
 
+        self.lower_red = np.array([self.hue_red_l, self.saturation_red_l , self.lightness_red_l])
+        self.upper_red = np.array([self.hue_red_h, self.saturation_red_h, self.lightness_red_h])
+        self.lower_yellow = np.array([self.hue_yellow_l, self.saturation_yellow_l , self.lightness_yellow_l])
+        self.upper_yellow = np.array([self.hue_yellow_h, self.saturation_yellow_h, self.lightness_yellow_h])
+        self.lower_green = np.array([self.hue_green_l, self.saturation_green_l , self.lightness_green_l])
+        self.upper_green = np.array([self.hue_green_h, self.saturation_green_h, self.lightness_green_h])
+
         return config
 
 
@@ -294,6 +301,10 @@ class DetectTrafficLight():
         # Convert BGR to HSV
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
+        
+
+        # define range of red color in HSV
+        
 
         # Threshold the HSV image to get only red colors
         mask = cv2.inRange(hsv, color_lower, color_upper)
@@ -336,6 +347,7 @@ class DetectTrafficLight():
         edge = cv2.Canny(cv_image_mask, 150, 200)
         circles = cv2.HoughCircles(edge , cv2.HOUGH_GRADIENT, 1, len(cv_image_mask)/5, param1 = 200, param2 = 6, minRadius = 4, maxRadius = 7)
         
+        
 
         rows = cv_image_mask.shape[0]
         cols = cv_image_mask.shape[1]
@@ -373,8 +385,12 @@ class DetectTrafficLight():
             return find_color
         else:
             return False
-    
+        # cv2.imshow("test",self.cv_image_monitor)
+        # cv2.waitKey(5)
         
+
+
+
     def cbTrafficLightFinished(self, traffic_light_finished_msg):
         self.is_traffic_light_finished = True
 
